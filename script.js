@@ -6,79 +6,103 @@ window.addEventListener('scroll', () => {
     } else {
         navbar.classList.remove('scrolled');
     }
+
+    // Back to top visibility
+    const btn = document.getElementById('backToTop');
+    if (btn) {
+        if (window.scrollY > 500) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    }
 });
 
-// Smooth scroll for nav links
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
 });
 
-// Particle animation
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
+// ===== HERO INTRO ANIMATION =====
+const words = document.querySelectorAll('.word');
+const timelessText = document.querySelector('.timeless-text');
+const bgBarren = document.querySelector('.bg-barren');
+const bgLuxury = document.querySelector('.bg-luxury');
+const heroRest = document.querySelector('.hero-rest');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+words.forEach((word, i) => {
+    setTimeout(() => {
+        word.classList.add('drop');
+    }, 400 + (i * 350));
 });
 
-const particles = [];
-const count = 80;
+setTimeout(() => {
+    words.forEach(word => word.classList.add('flip'));
+}, 2400);
 
-for (let i = 0; i < count; i++) {
-    particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.5 + 0.3,
-        dx: (Math.random() - 0.5) * 0.4,
-        dy: (Math.random() - 0.5) * 0.4,
-        opacity: Math.random() * 0.6 + 0.1
-    });
-}
+setTimeout(() => {
+    timelessText.classList.add('show');
+}, 3000);
 
-function drawParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(201, 168, 76, ${p.opacity})`;
-        ctx.fill();
+setTimeout(() => {
+    bgBarren.classList.add('hide');
+    bgLuxury.classList.add('show');
+}, 3400);
 
-        p.x += p.dx;
-        p.y += p.dy;
+setTimeout(() => {
+    heroRest.classList.add('show');
+}, 4200);
 
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-    });
-    requestAnimationFrame(drawParticles);
-}
-
-drawParticles();
-
-// Fade in animation on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
+// ===== SCROLL FADE IN =====
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
     });
-}, observerOptions);
+}, { threshold: 0.1 });
 
 document.querySelectorAll('.service-card').forEach(el => {
     el.classList.add('fade-in');
     observer.observe(el);
+});
+
+// Portfolio filter
+const filterBtns = document.querySelectorAll('.filter-btn');
+const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        portfolioItems.forEach(item => {
+            if (filter === 'all' || item.dataset.category === filter) {
+                item.classList.remove('hidden');
+            } else {
+                item.classList.add('hidden');
+            }
+        });
+    });
+});
+
+// Contact form
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = this.querySelector('input[type="text"]').value;
+        const phone = this.querySelector('input[type="tel"]').value;
+        const project = this.querySelector('select').value;
+        const message = this.querySelector('textarea').value;
+        const waMessage = `Hi, I'm ${name}. Phone: ${phone}. Project: ${project}. ${message}`;
+        window.open(`https://wa.me/917654641785?text=${encodeURIComponent(waMessage)}`, '_blank');
+    });
+}
+
+// Back to top click
+document.getElementById('backToTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
