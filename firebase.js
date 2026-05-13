@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 const firebaseConfig = {
     apiKey: "AIzaSyBfC3sxQvU2dpSRZpQKLua_Kf8xJia9_p4",
     authDomain: "vertical-design-studio.firebaseapp.com",
@@ -15,7 +14,6 @@ const CATALOGUE_URL = "https://drive.google.com/file/d/YOUR_FILE_ID/view";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const analytics = getAnalytics(app);
 const provider = new GoogleAuthProvider();
 
 const modalOverlay = document.getElementById('modalOverlay');
