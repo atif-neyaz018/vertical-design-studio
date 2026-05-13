@@ -7,7 +7,7 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('scrolled');
     }
 
-    // Back to top visibility
+    // Back to top
     const btn = document.getElementById('backToTop');
     if (btn) {
         if (window.scrollY > 500) {
@@ -24,6 +24,22 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+});
+
+document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
     });
 });
 
@@ -101,8 +117,3 @@ if (contactForm) {
         window.open(`https://wa.me/917654641785?text=${encodeURIComponent(waMessage)}`, '_blank');
     });
 }
-
-// Back to top click
-document.getElementById('backToTop').addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
